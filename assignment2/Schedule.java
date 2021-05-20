@@ -32,6 +32,10 @@ public class Schedule {
 		scheduleNum++;
 	}
 
+	public int getDays() {
+		return this.days;
+	}
+
 	public String getName() {
 		return this.name;
 	}
@@ -59,7 +63,7 @@ public class Schedule {
 	}
 
 	public int removePlan(int day, int time) throws InvalidAccessException {
-		if (day > this.days || day < 0 || time < 9 || time > 20 || plan[day - 1][time - 9] == null)
+		if (plan[day - 1][time - 9] == null)
 			throw new InvalidAccessException();
 		for (Person m : member)
 			this.expense -= this.plan[day - 1][time - 9].getActualPrice(m);

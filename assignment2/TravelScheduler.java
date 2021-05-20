@@ -69,23 +69,27 @@ public class TravelScheduler {
 		int check = 0;
 
 		while (input[0] != 3) {// 3을 고르면 출력후 빠져나감
-			try {
-				System.out.println("1) Select schedule");
-				System.out.println("2) Edit schedule");
-				System.out.println("3) End program");
-				System.out.print("Select menu: ");
-				input[0] = scan.nextInt();
-				if (input[0] > 3 || input[0] < 1)
-					throw new InvalidAccessException();
-			} catch (InvalidAccessException e) {
-				System.out.println(e.getMessage());
-			} catch (InputMismatchException e) {
-				// 왜 scanner.nextLine만 써주면 문제가 해결되는가?
-				// scanner에 이미 입력된 키를 모두 제거하기 위해
-				// 저장되어있는 값을 제거
-				scan.nextLine();
-				System.out.println("Enter number!");
-				continue;
+			System.out.println("1) Select schedule");
+			System.out.println("2) Edit schedule");
+			System.out.println("3) End program");
+			while (true) {
+				try {
+					System.out.print("Select menu: ");
+					input[0] = scan.nextInt();
+					if (input[0] > 3 || input[0] < 1)
+						throw new InvalidAccessException();
+					break;
+				} catch (InvalidAccessException e) {
+					System.out.println(e.getMessage());
+					// continue;
+				} catch (InputMismatchException e) {
+					// 왜 scanner.nextLine만 써주면 문제가 해결되는가?
+					// scanner에 이미 입력된 키를 모두 제거하기 위해
+					// 저장되어있는 값을 제거
+					scan.nextLine();
+					System.out.println("Enter number!");
+					// continue;
+				}
 			}
 			switch (input[0]) {
 			case 1:// 1) Select schedule
@@ -97,18 +101,21 @@ public class TravelScheduler {
 						System.out.println(i + 1 + ") EMPTY SCHEDULE");
 				}
 
-				System.out.print("Select a schedule: ");
-				try {
-					input[1] = scan.nextInt();
-					if (input[1] > scheduleList.length || input[1] < 0)
-						throw new InvalidAccessException();
-				} catch (InvalidAccessException e) {
-					System.out.println(e.getMessage());
-					break;
-				} catch (InputMismatchException e) {
-					scan.nextLine();
-					System.out.println("Enter number!");
-					break;
+				while (true) {
+					try {
+						System.out.print("Select a schedule: ");
+						input[1] = scan.nextInt();
+						if (input[1] > scheduleList.length || input[1] < 0)
+							throw new InvalidAccessException();
+						break;
+					} catch (InvalidAccessException e) {
+						System.out.println(e.getMessage());
+						continue;
+					} catch (InputMismatchException e) {
+						scan.nextLine();
+						System.out.println("Enter number!");
+						continue;
+					}
 				}
 				if (input[1] == 0 || scheduleList[input[1] - 1] == null) // 0 또는 EMPTY SCHEDULE을 선택하면 이전 메뉴로 돌아 감
 					continue;
@@ -118,18 +125,21 @@ public class TravelScheduler {
 					System.out.println("1) Add activity");
 					System.out.println("2) Remove activity");
 					System.out.println("3) Print schedule");
-					System.out.print("Select menu: ");
-					try {
-						input[2] = scan.nextInt();
-						if (input[2] > 3 || input[2] < 0)
-							throw new InvalidAccessException();
-					} catch (InvalidAccessException e) {
-						System.out.println(e.getMessage());
-						continue;
-					} catch (InputMismatchException e) {
-						scan.nextLine();
-						System.out.println("Enter number!");
-						continue;
+					while (true) {
+						System.out.print("Select menu: ");
+						try {
+							input[2] = scan.nextInt();
+							if (input[2] > 3 || input[2] < 0)
+								throw new InvalidAccessException();
+							break;
+						} catch (InvalidAccessException e) {
+							System.out.println(e.getMessage());
+							continue;
+						} catch (InputMismatchException e) {
+							scan.nextLine();
+							System.out.println("Enter number!");
+							continue;
+						}
 					}
 
 					switch (input[2]) {
@@ -141,26 +151,56 @@ public class TravelScheduler {
 							occur = 0;
 							for (int i = 0; i < activityList.length; i++)
 								System.out.println(i + 1 + ") " + activityList[i].toString());
-							try {
-								System.out.print("Select activity to do: ");
-								input[3] = scan.nextInt();
-								if (input[3] > activityList.length || input[3] < 1)
-									throw new InvalidAccessException("Activity");
-								System.out.print("Enter the day to do activity: ");
-								input[4] = scan.nextInt();
-								if (input[4] > scheduleList.length || input[4] < 1)
-									throw new InvalidAccessException("Day");
-								System.out.print("Enter the time to do activity(9~20): ");
-								input[5] = scan.nextInt();
-								if (input[5] > 20 || input[5] < 9)
-									throw new InvalidAccessException("Time");
-							} catch (InvalidAccessException e) {
-								System.out.println(e.getMessage());
-								break;
-							} catch (InputMismatchException e) {
-								scan.nextLine();
-								System.out.println("Enter number!");
-								continue;
+
+							while (true) {
+								try {
+									System.out.print("Select activity to do: ");
+									input[3] = scan.nextInt();
+									if (input[3] > activityList.length || input[3] < 1)
+										throw new InvalidAccessException("Activity");
+									break;
+								} catch (InvalidAccessException e) {
+									System.out.println(e.getMessage());
+									continue;
+								} catch (InputMismatchException e) {
+									scan.nextLine();
+									System.out.println("Enter number!");
+									continue;
+								}
+							}
+
+							while (true) {
+								try {
+									System.out.print("Enter the day to do activity: ");
+									input[4] = scan.nextInt();
+									if (input[4] > scheduleList[input[1] - 1].getDays() || input[4] < 1)
+										throw new InvalidAccessException(" Day");
+									break;
+								} catch (InvalidAccessException e) {
+									System.out.println(e.getMessage());
+									continue;
+								} catch (InputMismatchException e) {
+									scan.nextLine();
+									System.out.println("Enter number!");
+									continue;
+								}
+							}
+
+							while (true) {
+								try {
+									System.out.print("Enter the time to do activity(9~20): ");
+									input[5] = scan.nextInt();
+									if (input[5] > 20 || input[5] < 9)
+										throw new InvalidAccessException(" Time");
+									break;
+								} catch (InvalidAccessException e) {
+									System.out.println(e.getMessage());
+									continue;
+								} catch (InputMismatchException e) {
+									scan.nextLine();
+									System.out.println("Enter number!");
+									continue;
+								}
 							}
 
 							try {
@@ -191,23 +231,48 @@ public class TravelScheduler {
 
 					case 2:// input[1]에 remove activity
 						scheduleList[input[1] - 1].printSchedule();
+						int day = 0, time = 0;
+						while (true) {
+							try {
+								System.out.print("Enter the day to remove activity: ");
+								day = scan.nextInt();
+								if (day > scheduleList[input[1] - 1].getDays() || day < 1)
+									throw new InvalidAccessException(" Day");
+								break;
+							} catch (InvalidAccessException e) {
+								System.out.println(e.getMessage());
+								continue;
+							} catch (InputMismatchException e) {
+								scan.nextLine();
+								System.out.println("Enter number!");
+								continue;
+							}
+						}
+						while (true) {
+							try {
+								System.out.print("Enter the time to remove activity: ");
+								time = scan.nextInt();
+								if (time > 20 || time < 9)
+									throw new InvalidAccessException(" Time");
+								break;
+							} catch (InvalidAccessException e) {
+								System.out.println(e.getMessage());
+								continue;
+							} catch (InputMismatchException e) {
+								scan.nextLine();
+								System.out.println("Enter number!");
+								continue;
+							}
+						}
 						try {
-							System.out.print("Enter the day to remove activity: ");
-							int day = scan.nextInt();
-							System.out.print("Enter the time to remove activity: ");
-							int time = scan.nextInt();
 							check = scheduleList[input[1] - 1].removePlan(day, time);
 							if (check == 1)
 								System.out.println("Removed successfully");
-							break;
 						} catch (InvalidAccessException e) {
 							System.out.println(e.getMessage());
 							continue;
-						} catch (InputMismatchException e) {
-							scan.nextLine();
-							System.out.println("Enter number!");
-							continue;
 						}
+						break;
 
 					case 3:// input[1]에 print schedule
 						scheduleList[input[1] - 1].printSchedule();
@@ -224,66 +289,80 @@ public class TravelScheduler {
 				do {
 					System.out.println("1) Make a new schedule");
 					System.out.println("2) Copy an existing schedule");
-					try {
-						System.out.print("Select menu: ");
-						input[6] = scan.nextInt();
-						if (input[6] > 2 || input[6] < 0)
-							throw new InvalidAccessException();
-						if (Schedule.scheduleNum == 5)
-							throw new ArrayFullException();
-					} catch (InvalidAccessException e) {
-						System.out.println(e.getMessage());
-					} catch (ArrayFullException e) {
-						System.out.println(e.getMessage());
-					} catch (InputMismatchException e) {
-						scan.nextLine();
-						System.out.println("Enter number!");
-						continue;
+					while (true) {
+						try {
+							System.out.print("Select menu: ");
+							input[6] = scan.nextInt();
+							if (input[6] > 2 || input[6] < 0)
+								throw new InvalidAccessException();
+							if (Schedule.scheduleNum == 5)
+								throw new ArrayFullException();
+							break;
+						} catch (InvalidAccessException e) {
+							System.out.println(e.getMessage());
+							continue;
+						} catch (ArrayFullException e) {
+							System.out.println(e.getMessage());
+							continue;
+						} catch (InputMismatchException e) {
+							scan.nextLine();
+							System.out.println("Enter number!");
+							continue;
+						}
 					}
 
 					switch (input[6]) {
-					case 0:
-						break;
 					case 1:// 1) Make a new schedule
 							// Make a new schedule 이름, 전체 일 수를 입력 받아서 schedule 생성
 						scan.nextLine();
 						String name = null;
-						try {
-							System.out.print("Enter a name for the schedule: ");
-							name = scan.nextLine();
-						} catch (InputMismatchException e) {
-							System.out.println("Enter String!");
+						while (true) {
+							try {
+								System.out.print("Enter a name for the schedule: ");
+								name = scan.nextLine();
+								break;
+							} catch (InputMismatchException e) {
+								System.out.println("Enter String!");
+							}
 						}
+
 						int days = 0;
-						try {
-							System.out.print("Enter travel days: ");
-							days = scan.nextInt();
-							if (days <= 0)
-								throw new InvalidAccessException();
-						} catch (InvalidAccessException e) {
-							System.out.println(e.getMessage());
-							continue;
-						} catch (InputMismatchException e) {
-							scan.nextLine();
-							System.out.println("Enter number!");
-							break;
+						while (true) {
+							try {
+								System.out.print("Enter travel days: ");
+								days = scan.nextInt();
+								if (days <= 0)
+									throw new InvalidAccessException();
+								break;
+							} catch (InvalidAccessException e) {
+								System.out.println(e.getMessage());
+								continue;
+							} catch (InputMismatchException e) {
+								scan.nextLine();
+								System.out.println("Enter number!");
+								continue;
+							}
 						}
 
 						int num = 0;
-						try {
-							System.out.print("Enter number of member: ");
-							num = scan.nextInt();
-							scan.nextLine();
-							if (num > member.length || num < 0)
-								throw new InvalidAccessException();
-						} catch (InvalidAccessException e) {
-							System.out.println(e.getMessage());
-							continue;
-						} catch (InputMismatchException e) {
-							scan.nextLine();
-							System.out.println("Enter number!");
-							continue;
+						while (true) {
+							try {
+								System.out.print("Enter number of member: ");
+								num = scan.nextInt();
+								scan.nextLine();
+								if (num > member.length || num < 1)
+									throw new InvalidAccessException();
+								break;
+							} catch (InvalidAccessException e) {
+								System.out.println(e.getMessage());
+								continue;
+							} catch (InputMismatchException e) {
+								scan.nextLine();
+								System.out.println("Enter number!");
+								continue;
+							}
 						}
+
 						Person[] members = new Person[num];
 						int mem = 1;
 						for (Person m : member) {
@@ -291,22 +370,27 @@ public class TravelScheduler {
 									+ ", " + m.getWeight());
 							mem++;
 						}
+						int[] n = new int[num];
 						for (int i = 0; i < num;) {
-							int n = 0;
 							try {
 								System.out.print("Choose member " + (i + 1) + ": ");
-								n = scan.nextInt();
+								n[i] = scan.nextInt();
 								scan.nextLine();
-								if (n > member.length || n < 0)
+								if (n[i] < 1 || n[i] > member.length)
 									throw new InvalidAccessException();
+								for (int j = 0; j < i; j++)
+									if (n[i] == n[j])
+										throw new InvalidAccessException(" Already selected member");
+
 							} catch (InvalidAccessException e) {
 								System.out.println(e.getMessage());
+								continue;
 							} catch (InputMismatchException e) {
 								scan.nextLine();
 								System.out.println("Enter number!");
 								continue;
 							}
-							members[i] = new Person(member[n - 1]);
+							members[i] = new Person(member[n[i] - 1]);
 							i++;
 						}
 						scheduleList[Schedule.scheduleNum] = new Schedule(name, days, members);
@@ -320,33 +404,43 @@ public class TravelScheduler {
 							else
 								System.out.println(i + 1 + ") EMPTY SCHEDULE");
 						}
-						try {
-							System.out.print("Select the schedule to copy: ");
-							input[7] = scan.nextInt();
-							scan.nextLine();
-							if (input[7] > Schedule.scheduleNum || input[7] < 0)
-								throw new InvalidAccessException();
-						} catch (InvalidAccessException e) {
-							System.out.println(e.getMessage());
-							continue;
-						} catch (InputMismatchException e) {
-							scan.nextLine();
-							System.out.println("Enter number!");
-							continue;
+						while (true) {
+							try {
+								System.out.print("Select the schedule to copy: ");
+								input[7] = scan.nextInt();
+								scan.nextLine();
+								if (input[7] > scheduleList.length || input[7] < 0)
+									throw new InvalidAccessException();
+								break;
+							} catch (InvalidAccessException e) {
+								System.out.println(e.getMessage());
+								continue;
+							} catch (InputMismatchException e) {
+								scan.nextLine();
+								System.out.println("Enter number!");
+								continue;
+							}
 						}
+
+						if (input[7] > Schedule.scheduleNum || input[7] == 0)
+							break;
+
 						String s_1 = null;
-						try {
-							System.out.print("Enter a new schedule name: ");
-							s_1 = scan.nextLine();
-						} catch (InputMismatchException e) {
-							System.out.println("Enter String!");
-							continue;
+						while (true) {
+							try {
+								System.out.print("Enter a new schedule name: ");
+								s_1 = scan.nextLine();
+								break;
+							} catch (InputMismatchException e) {
+								System.out.println("Enter String!");
+								continue;
+							}
 						}
 						scheduleList[Schedule.scheduleNum] = new Schedule(s_1, scheduleList[input[7] - 1], member);
 						break;
 					}
 				} while (input[6] != 0);
-				break;
+				// break;
 
 			case 3:// 3) End program
 				break;
