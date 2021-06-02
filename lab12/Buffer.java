@@ -18,7 +18,7 @@ public class Buffer {
 			wait();
 		}
 		System.out.println("Adding item " + toAdd);
-		// System.out.flush();
+		System.out.flush();
 		data[loc++] = toAdd;
 		notifyAll();
 	}
@@ -31,7 +31,7 @@ public class Buffer {
 		double hold = data[--loc];
 		data[loc] = 0.0;
 		System.out.println("Removing item " + hold);
-		// System.out.flush();
+		System.out.flush();
 		notifyAll();
 		return hold;
 	}
