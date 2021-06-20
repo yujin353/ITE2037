@@ -330,7 +330,7 @@ public class Shopping {
 							}
 							try {
 								if (mart.getProduct(input[7] - 1) instanceof Food) {
-									Food f = (Food) mart.getProduct(input[7]);
+									Food f = (Food) mart.getProduct(input[7] - 1);
 									if (f.isExpired(current))
 										throw new ExpiredProductException(f.getExp());
 								}
